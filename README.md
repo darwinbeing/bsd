@@ -12,8 +12,7 @@ BSD is a pulse-width modulated signal with three possible states: sync, 0, and 1
 | ----------- | ----------- | ----------- |----------- |----------- |----------- |----------- |----------- |
 | 3 bits    | 1 bit       | 3 bits |  4 bits| 1 bit|  8 bits| 1 bit| 1 bit|
 
-[Integrated Precision Battery Sensor for Automotive ADuC7036](datasheet/ADuC7036.pdf)
-
+[Integrated Precision Battery Sensor for Automotive ADuC7036](datasheet/ADuC7036.pdf)  
 [//]: # (Image References)
 [image1]: ./images/IBS.png "IBS"
 [image2]: ./images/TEK00000.png "14.4V RX High Byte"
@@ -29,6 +28,10 @@ Logic level shifting is necessary when devices operating at different voltage le
 
 The level shifter in this setup uses a Diodes N-channel MOSFET (2N7002W) and 6.8kΩ pull-up resistors. This configuration allows the Pico's GPIO to drive the 12V BSD line without exceeding its voltage limits, and vice versa. The MOSFET handles the bidirectional nature of the communication, enabling proper signal transmission in both directions.
 ![alt text][image6]
+
+[LOGIC LEVEL CONVERTER BOARD - 333029](https://www.digikey.com/en/products/detail/soldered-electronics/333029/21720444)  
+[LOGIC LEVEL CONVERTER BOARD - 2595](https://www.digikey.com/en/products/detail/pololu-corporation/2595/10450598)
+
 
 ![alt text][image2]
 ![alt text][image3]
