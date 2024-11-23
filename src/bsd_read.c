@@ -20,17 +20,23 @@ int main() {
         PIO pio = pio0;
         int sm = 0;
         uint offset = pio_add_program(pio, &bsd_program);
-
         bsd_program_init(pio, sm, offset, BSD_PIN, 1200);
+        sleep_ms(100);
+
         while (1) {
                 int i;
                 int j;
                 for(i = 0; i < 1; ++i) {
-                        for(j = 0; j < 3; ++j) {
+                        for(j = 0; j < 8; ++j) {
                                 float voltage;
-                                float current;
-                                // pio_bsd_get_voltage(pio, sm, &voltage);
-                                pio_bsd_get_current(pio, sm, &current);
+                                // float current;
+                                ibs_pio_bsd_get_voltage(pio, sm, &voltage);
+                                // ibs_pio_bsd_get_current(pio, sm, &current);
+                                // uint16_t val;
+                                // pio_bsd_get_val(pio, sm, 0, i, j, &val);
+                                // pio_bsd_get_val(pio, sm, 0, 0, 3, &val);
+                                float val;
+                                ibs_pio_bsd_get_temperature(pio, sm, &val);
                                 sleep_ms(200);
                         }
                 }
