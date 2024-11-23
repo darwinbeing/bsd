@@ -21,14 +21,16 @@ int main() {
         int sm = 0;
         uint offset = pio_add_program(pio, &bsd_program);
 
-        bsd_program_init(pio, sm, offset, BSD_PIN, 1200, false);
+        bsd_program_init(pio, sm, offset, BSD_PIN, 1200);
         while (1) {
                 int i;
                 int j;
                 for(i = 0; i < 1; ++i) {
                         for(j = 0; j < 3; ++j) {
                                 float voltage;
-                                pio_bsd_get_voltage(pio, sm, &voltage);
+                                float current;
+                                // pio_bsd_get_voltage(pio, sm, &voltage);
+                                pio_bsd_get_current(pio, sm, &current);
                                 sleep_ms(200);
                         }
                 }

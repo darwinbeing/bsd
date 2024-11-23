@@ -58,3 +58,21 @@ int pio_bsd_get_voltage(PIO pio, uint32_t sm, float *pdata)
 
         return 0;
 }
+
+int pio_bsd_get_current(PIO pio, uint32_t sm, float *pdata)
+{
+        // Addr:0 Reg:1 might be voltage 0xaf00:12V?
+        uint32_t data_hi;
+        uint32_t data_lo;
+
+        // pio_sm_clear_fifos(pio, sm);
+        bsd_master_read(pio, sm, 0, 0, 0, &data_hi);
+        bsd_master_read(pio, sm, 0, 0, 0, &data_lo);
+        uint32_t data = data_hi << 8 | data_lo;
+        float current = (data - 0x9344) * 0.04;
+        *pdata = current;
+        printf("BSD ADDR %d REG %d HI %x LO %x Current %.2fA\n",
+               0, 0, data_hi, data_lo, current);
+
+        return 0;
+}
