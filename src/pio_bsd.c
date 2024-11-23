@@ -60,7 +60,7 @@ int ibs_pio_bsd_get_voltage(PIO pio, uint32_t sm, float *pdata)
                 return ret;
         }
         pio_bsd_master_read(pio, sm, 0, 0, 1, &data_lo);
-        uint32_t data = data_hi << 8 | data_lo;
+        int data = data_hi << 8 | data_lo;
         float voltage = (data - 0xaf00) * 0.0005 + 12;
         *pdata = voltage;
         printf("BSD ADDR %d REG %d HI %x LO %x Voltage %.2fV\n",
@@ -81,7 +81,7 @@ int ibs_pio_bsd_get_current(PIO pio, uint32_t sm, float *pdata)
                 return ret;
         }
         pio_bsd_master_read(pio, sm, 0, 0, 0, &data_lo);
-        uint32_t data = data_hi << 8 | data_lo;
+        int data = data_hi << 8 | data_lo;
         float current = (data - 0x9344) * 0.04;
         *pdata = current;
         printf("BSD ADDR %d REG %d HI %x LO %x Current %.2fA\n",
@@ -117,7 +117,7 @@ int pio_bsd_get_val(PIO pio, uint32_t sm, uint32_t dir, uint32_t saddr, uint32_t
                 return ret;
         }
         pio_bsd_master_read(pio, sm, dir, saddr, reg, &data_lo);
-        uint16_t data = data_hi << 8 | data_lo;
+        int data = data_hi << 8 | data_lo;
         *pdata = data;
         printf("BSD ADDR %d REG %d HI %x LO %x Val %x\n",
                saddr, reg, data_hi, data_lo, data);
