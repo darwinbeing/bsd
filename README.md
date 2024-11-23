@@ -12,7 +12,8 @@ BSD is a pulse-width modulated signal with three possible states: sync, 0, and 1
 | ----------- | ----------- | ----------- |----------- |----------- |----------- |----------- |----------- |
 | 3 bits    | 1 bit       | 3 bits |  4 bits| 1 bit|  8 bits| 1 bit| 1 bit|
 
-[Integrated Precision Battery Sensor for Automotive ADuC7036](datasheet/ADuC7036.pdf)  
+[Integrated Precision Battery Sensor for Automotive ADuC7036](datasheet/ADuC7036.pdf)
+
 [//]: # (Image References)
 [image1]: ./images/IBS.png "IBS"
 [image2]: ./images/TEK00000.png "14.4V RX High Byte"
@@ -20,7 +21,6 @@ BSD is a pulse-width modulated signal with three possible states: sync, 0, and 1
 [image4]: ./images/TEK00002.PNG "12V RX High Byte"
 [image5]: ./images/TEK00003.PNG "12V RX Low Byte"
 [image6]: ./images/logic-level-shifting-basics.png "Logic Level Shifting"
-
 
 
 ## Logic Level Shifting 
