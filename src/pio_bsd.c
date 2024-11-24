@@ -26,9 +26,9 @@ static inline int pio_bsd_master_read(PIO pio, uint32_t sm, uint32_t dir,
         data = ~pio_sm_get_blocking(pio, sm) & 0x3ff;
         if(data == 0) {
                 // TIMEOUT
+                // printf("TIMEOUT!\n");
                 return -1;
         }
-
         uint32_t ack = data & 1;
         uint32_t p2 = (data >> 1) & 1;
         if(p2 != parity(data >> 2)) {
