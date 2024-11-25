@@ -1,6 +1,6 @@
 .pio_version 0 // only requires PIO version 0
 
-.program bsd
+.program bsd_read
 .side_set 1 opt
 
 .lang_opt python sideset_init = pico.PIO.OUT_HIGH
@@ -45,13 +45,20 @@ rx_data:
     jmp !osre sync_loop
 .wrap
 
+
+.program bsd_write
+.side_set 1 opt
+
+.wrap_target
+    nop
+.wrap
+
+
 % c-sdk {
 #include "hardware/clocks.h"
 
-static inline void bsd_program_init(PIO pio, uint sm, uint offset, uint pin, float freq)
+static inline void bsd_program_init(PIO pio, uint sm_read, uint sm_write, uint pin, float freq)
 {
-    pio_sm_set_pins_with_mask(pio, sm, 1u << pin, 1u << pin);
-    pio_sm_set_pindirs_with_mask(pio, sm, 1u << pin, 1u << pin);
     pio_gpio_init(pio, pin);
     gpio_pull_up(pin);
     // The pin muxes can be configured to invert the output
@@ -65,22 +72,50 @@ static inline void bsd_program_init(PIO pio, uint sm, uint offset, uint pin, flo
     gpio_set_slew_rate(pin, GPIO_SLEW_RATE_FAST);
     gpio_set_drive_strength(pin, GPIO_DRIVE_STRENGTH_12MA);
 
-    pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, true);
+    // state machine read
+    uint bsd_read_offset = pio_add_program(pio, &bsd_read_program);
+    pio_sm_config sm_read_config = bsd_read_program_get_default_config(bsd_read_offset);
+    pio_sm_set_consecutive_pindirs(pio, sm_read, pin, 1, true);
+    sm_config_set_out_pins(&sm_read_config, pin, 1);
+    sm_config_set_set_pins(&sm_read_config, pin, 1);
+    sm_config_set_sideset_pins(&sm_read_config, pin);
+    sm_config_set_out_shift(&sm_read_config, false, true, 9);
 
-    pio_sm_config c = bsd_program_get_default_config(offset);
-    sm_config_set_out_pins(&c, pin, 1);
-    sm_config_set_set_pins(&c, pin, 1);
-    sm_config_set_sideset_pins(&c, pin);
-    sm_config_set_out_shift(&c, false, true, 9);
+    pio_sm_set_pins_with_mask(pio, sm_read, 1u << pin, 1u << pin);
+    pio_sm_set_pindirs_with_mask(pio, sm_read, 1u << pin, 1u << pin);
 
-    sm_config_set_in_pins(&c, pin);
-    sm_config_set_in_shift(&c, false, true, 10);
+    sm_config_set_in_pins(&sm_read_config, pin);
+    sm_config_set_in_shift(&sm_read_config, false, true, 10);
 
     int cycles_per_bit = 16;
-    float div = clock_get_hz(clk_sys) / (freq * cycles_per_bit);
-    sm_config_set_clkdiv(&c, div);
+    float div_read = clock_get_hz(clk_sys) / (freq * cycles_per_bit);
+    sm_config_set_clkdiv(&sm_read_config, div_read);
 
-    pio_sm_init(pio, sm, offset, &c);
-    pio_sm_set_enabled(pio, sm, true);
+    pio_sm_init(pio, sm_read, bsd_read_offset, &sm_read_config);
+
+
+    // state machine write
+    // uint bsd_write_offset = pio_add_program(pio, &bsd_write_program);
+    // pio_sm_config sm_write_config = bsd_write_program_get_default_config(bsd_write_offset);
+    // pio_sm_set_consecutive_pindirs(pio, sm_write, pin, 1, true);
+    // sm_config_set_out_pins(&sm_write_config, pin, 1);
+    // sm_config_set_set_pins(&sm_write_config, pin, 1);
+    // sm_config_set_sideset_pins(&sm_write_config, pin);
+    // sm_config_set_out_shift(&sm_write_config, false, true, 9);
+
+    // pio_sm_set_pins_with_mask(pio, sm_write, 1u << pin, 1u << pin);
+    // pio_sm_set_pindirs_with_mask(pio, sm_write, 1u << pin, 1u << pin);
+
+    // sm_config_set_in_pins(&sm_write_config, pin);
+    // sm_config_set_in_shift(&sm_write_config, false, true, 10);
+
+    // cycles_per_bit = 16;
+    // float div_write = clock_get_hz(clk_sys) / (freq * cycles_per_bit);
+    // sm_config_set_clkdiv(&sm_write_config, div_write);
+
+    // pio_sm_init(pio, sm_write, bsd_write_offset, &sm_write_config);
+
+    // pio_sm_set_enabled(pio, sm_write, true);
+    pio_sm_set_enabled(pio, sm_read, true);
 }
 %}

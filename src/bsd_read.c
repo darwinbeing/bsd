@@ -18,9 +18,11 @@ int main() {
         printf("BSD Smoke Test, using pin %d", BSD_PIN);
 
         PIO pio = pio0;
-        int sm = 0;
-        uint offset = pio_add_program(pio, &bsd_program);
-        bsd_program_init(pio, sm, offset, BSD_PIN, 1200);
+        int sm_read = 0;
+        int sm_write = 0;
+        sm_read = pio_claim_unused_sm(pio, true);
+        sm_write = pio_claim_unused_sm(pio, true);
+        bsd_program_init(pio, sm_read, sm_write, BSD_PIN, 1200);
         sleep_ms(100);
 
         while (1) {
@@ -29,14 +31,18 @@ int main() {
                 for(i = 0; i < 1; ++i) {
                         for(j = 0; j < 8; ++j) {
                                 float voltage;
-                                // float current;
-                                ibs_pio_bsd_get_voltage(pio, sm, &voltage);
+                                float current;
+                                ibs_pio_bsd_get_voltage(pio, sm_read, &voltage);
                                 // ibs_pio_bsd_get_current(pio, sm, &current);
                                 // uint16_t val;
-                                // pio_bsd_get_val(pio, sm, 0, i, j, &val);
-                                // pio_bsd_get_val(pio, sm, 0, 0, 3, &val);
+                                // pio_bsd_get_val(pio, sm_read, 0, i, j, &val);
+                                // pio_bsd_get_val(pio, sm_read, 0, 0, 3, &val);
                                 float val;
-                                ibs_pio_bsd_get_temperature(pio, sm, &val);
+                                ibs_pio_bsd_get_temperature(pio, sm_read, &val);
+
+                                // uint16_t val = 0x40;
+                                // pio_bsd_set_val(pio, sm_read, 0, 0, 3, &val);
+
                                 sleep_ms(200);
                         }
                 }
