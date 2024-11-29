@@ -38,7 +38,16 @@ The level shifter in this setup uses a Diodes N-channel MOSFET (2N7002W) and 6.8
 This circuit consists of four main components:
 PICO MCU Controller, Logic Level Conversion Module, Intelligent Battery Sensor (IBS), Battery or 12V Power Supply.
 
+## Mapping IBS Data Registers: Current, Voltage, and Temperature
+By testing all bus addresses and registers, it was discovered that the IBS responds to read/write operations at address 0. Based on the analysis:
+
+* Address 0, Register 0 likely represents current (16 bits).
+* Address 0, Register 1 likely represents voltage (16 bits).
+* Address 0, Register 3 likely represents temperature (8 bits).
+
 ![alt text][image2]
 ![alt text][image3]
 ![alt text][image4]
 ![alt text][image5]
+The images above show readings of 14.48V and 12V, with the IBS providing the high 8 bits and low 8 bits of data for each voltage.
+The minimum operating voltage for the BSD protocol is 7V.
