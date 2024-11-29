@@ -21,6 +21,7 @@ BSD is a pulse-width modulated signal with three possible states: sync, 0, and 1
 [image4]: ./images/TEK00002.PNG "12V RX High Byte"
 [image5]: ./images/TEK00003.PNG "12V RX Low Byte"
 [image6]: ./images/logic-level-shifting-basics.png "Logic Level Shifting"
+[image7]: ./images/PICO_PIO_IBS_BSD_SETUP.png "Logic Level Shifting"
 
 
 ## Logic Level Shifting 
@@ -32,6 +33,10 @@ The level shifter in this setup uses a Diodes N-channel MOSFET (2N7002W) and 6.8
 [LOGIC LEVEL CONVERTER BOARD - 333029](https://www.digikey.com/en/products/detail/soldered-electronics/333029/21720444)  
 [LOGIC LEVEL CONVERTER BOARD - 2595](https://www.digikey.com/en/products/detail/pololu-corporation/2595/10450598)
 
+## Setup
+![alt text][image7]
+This circuit consists of four main components:
+PICO MCU Controller, Logic Level Conversion Module, Intelligent Battery Sensor (IBS), Battery or 12V Power Supply.
 
 ![alt text][image2]
 ![alt text][image3]
