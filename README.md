@@ -36,7 +36,7 @@ The level shifter in this setup uses a Diodes N-channel MOSFET (2N7002W) and 6.8
 ## Setup
 ![alt text][image7]
 This circuit consists of four main components:
-PICO MCU Controller, Logic Level Conversion Module, Intelligent Battery Sensor (IBS), Battery or 12V Power Supply.
+PICO MCU Controller, Logic Level Conversion Module, Intelligent Battery Sensor (IBS), 12V Battery or Power Supply.
 
 ## Mapping IBS Data Registers: Current, Voltage, and Temperature
 By testing all bus addresses and registers, it was discovered that the IBS responds to read/write operations at address 0. Based on the analysis:
