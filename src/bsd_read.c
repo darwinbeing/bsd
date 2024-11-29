@@ -43,7 +43,7 @@ int main() {
                                 // uint16_t val = 0x40;
                                 // pio_bsd_set_val(pio, sm_read, 0, 0, 3, &val);
 
-                                sleep_ms(200);
+                                // sleep_ms(200);
                         }
                 }
 

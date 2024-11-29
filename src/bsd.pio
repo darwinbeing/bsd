@@ -8,14 +8,23 @@
 .lang_opt python out_shiftdir = 1
 
 ; 1 bit per 16 cycles
-sync_loop:
-    set x, 4
+.wrap_target
+
+    set x, 2 side 1 [7]
 sync_loop1:
     set pins, 0    side 0 [1]
     set pins, 1    side 1 [6]
     jmp x-- sync_loop1 side 1 [6]
 
+sync_loop2:
+    set pins, 0    side 0 [1]      ; 2
+    set pins, 1    side 1 [5]      ; 6
+    jmp !osre send_data side 1 [3] ; 4
+    jmp sync_loop2 side 1 [3]      ; 4
+
+send_data:
     set x, 8 side 1 [1]       ; 2
+
 bitloop:
     nop side 1 [1]            ; 2
     out y, 1       side 0 [1] ; 2
@@ -31,6 +40,7 @@ continue:
     jmp x--, bitloop side 1 [1]  ; 2
 
     set x, 9 side 1
+    ; set pins, 0
 
 rx_data:
     set pindirs, 1                ; 1
@@ -41,8 +51,8 @@ rx_data:
 
     set pindirs, 1 side 1
 
-.wrap_target
-    jmp !osre sync_loop
+    set pins, 0    side 0 [1]
+    set pins, 1    side 1 [5]
 .wrap
 
 
